@@ -1,0 +1,80 @@
+---
+title: "viz_and_eda"
+author: "Zakari L. Billo"
+date: "2025-09-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggridges)
+library(p8105.datasets)
+```
+
+Import the weather dataset
+
+```{r}
+data("weather_df")
+```
+
+make our first plot
+
+without geom point, the ggplot doesn't know what object types to put on the graph
+
+```{r}
+weather_df |> ggplot(aes(x = tmin, y = tmax))
+```
+
+```{r}
+ggp_weather_scatter <- weather_df |> ggplot(aes(x = tmin, y = tmax)) + geom_point()
+
+ggp_weather_scatter
+```
+
+check rows are missing 
+
+```{r}
+weather_df |> filter(is.na(tmax))
+```
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) + #color can be in the ggplot(aes())
+  geom_point(alpha = 0.3) + #alpha = opacity param
+  geom_smooth(se = FALSE) #
+```
+
+ where you define aesthetics matters
+ 
+```{r}
+weather_df |>
+ggplot(aes(x = tmin, y = tmax)) +
+geom_point(aes(color = name, size = prcp), alpha = 0.3) + 
+geom_smooth(se = FALSE) 
+```
+
+use faceting rq
+
+```{r}
+weather_df |>
+ggplot(aes(x = tmin, y = tmax)) +
+geom_point(aes(color = name, size = prcp), alpha = 0.8) + 
+geom_smooth(se = FALSE) + 
+facet_grid(. ~ name)
+
+weather_df |>
+ggplot(aes(x = tmin, y = tmax)) +
+geom_point(aes(color = name, size = prcp), alpha = 0.8) + 
+geom_smooth(se = FALSE) + 
+facet_grid(name ~ .)
+```
+
+make something more interesting 
+
+```{r}
+weather_df |>
+ggplot(aes(x = tmin, y = tmax, color = name)) +
+geom_point(aes(size = prcp), alpha = 0.3) + 
+geom_smooth(se = FALSE) + 
+facet_grid(. ~ name)
+```
+
