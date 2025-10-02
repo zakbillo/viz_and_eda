@@ -81,7 +81,6 @@ weather_df |>
     n = n()
   )
 ```
-```
 
 how many distinct date observations?
 
